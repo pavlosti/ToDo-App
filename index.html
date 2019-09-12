@@ -7,6 +7,7 @@
 	<title>My First Javascript App</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
  <body onload="init()">
@@ -15,7 +16,7 @@
 
 		<div class="col-sm">
 			<p>My task list:</p>
-			<div class="accordion" id="accordionExample">	
+			<div class="accordion" id="accordionExample">
 				<div class="">
 
 			    	<div class="" id="headingOne">
@@ -47,7 +48,7 @@
 				    <div style="margin-top: 10px;" class="" id="headingThree">
 				      <p class="mb-0">
 				        <button  class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-				        Other Day
+				        Others Day
 				    	</button>
 				      </p>
 				      	<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
@@ -56,8 +57,8 @@
 				      		</div>
 			    		</div>
 				    </div>
-			    	
-		  
+
+
 			</div>
 		</div>
 		</div>
@@ -75,7 +76,7 @@
 			  </div>
 			</form>
 			<button type="button" class="btn btn-primary" onclick="addTask()">Add Task</button>
-			<div class="completed_task"><p>Completed Task:<p id="completed_task"></p></p></div>
+			<div class="completed_task"><p>Today Completed Tasks:<p id="completed_task"></p></p></div>
 		</div>
 		<div class="col-sm">
 			<p>Finished Tasks:</p>

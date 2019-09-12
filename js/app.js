@@ -13,9 +13,54 @@ today = yyyy + '-' + mm + '-' + dd;
 var dateControl = document.querySelector('input[type="date"]');
 dateControl.value = today;
 
+function fetchAllStorage()
+{
+  var cur_date = today.split("-");
+  var archive = [],
+      keys = Object.keys(localStorage),
+      i = 0, key;
+
+  for (; key = keys[i]; i++) {
+      var task_date = localStorage.getItem(key).split(" ");
+      var task1_date = task_date[1].split("-");
+      console.log(task1_date);
+
+      if(task_date[1] === today)
+      {
+        addTaskLi(key, localStorage.getItem(key), task_date[1], "todayList");
+        count_today++;
+      }
+      else if (parseInt(cur_date[2]) + 1 === parseInt(task1_date[2]))
+      {
+        addTaskLi(key, localStorage.getItem(key), task_date[1], "tomorrowList");
+      }
+      else
+      {
+        addTaskLi(key, localStorage.getItem(key), task_date[1], "otherList");
+      }
+
+  }
+  //addEvent1();
+  count = keys.length + 1;
+  return archive;
+}
+
+function addEvent1()
+{
+  var list = document.querySelectorAll('li');
+
+    Array.prototype.slice.call(list).forEach(function(listItem){
+    listItem.addEventListener('click', function(e){
+      document.getElementById(this.id).style.color = "green";
+      console.log(this.id);
+      console.log(this.innerHTML);
+    });
+  });
+}
+
+
 function init()
 {
-
     if (count === null)
     {
       console.log("Local storage is empty")
@@ -23,62 +68,13 @@ function init()
     else
     {
       console.log("local storage is not empty")
-      allStorage();
-      document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
-      addEvent();
+      fetchAllStorage();
+      document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;      
     }
-
 }
 
 
-function allStorage()
-{
-  var cur_date = today.split("-");
-  var archive = [],
-      keys = Object.keys(localStorage),
-      i = 0, key;
 
-  for (; key = keys[i]; i++) {      
-      var task_date = localStorage.getItem(key).split(" ");
-      var task1_date = task_date[1].split("-");
-      console.log(task1_date);
-
-
-      if(task_date[1] === today)
-      {
-        addTaskLi(key, localStorage.getItem(key), task_date[1], "todayList");  
-        count_today++;
-      }
-      else if (parseInt(cur_date[1]) + 1 === parseInt(task1_date[1])) 
-      {
-        addTaskLi(key, localStorage.getItem(key), task_date[1], "tomorrowList");       
-      }       
-      
-  }
-  count = keys.length + 1;
-  return archive;
-}
-
-function addEvent()
-{
-   var list = document.querySelectorAll('li');
-
-    Array.prototype.slice.call(list).forEach(function(listItem){
-    listItem.addEventListener('click', function(e){
-      document.getElementById(this.id).style.color = "green";
-      console.log(this.id);
-      console.log(this.innerHTML);
-
-      addFinishedLi(this.id, this.innerHTML, "doneList");
-      // Remove from task list
-      var el = document.getElementById(this.id);
-      el.remove();
-      // Remove from Local Storage
-      localStorage.removeItem(this.id);
-    });
-  });
-
-}
 
 function addFinishedLi(id, text, list)
 {
@@ -91,9 +87,17 @@ function addFinishedLi(id, text, list)
   var textnode = document.createTextNode(text);
   node.appendChild(textnode);
   document.getElementById(list).appendChild(node);
+  fadeOutEffect(id);
+  // Remove from task list
+  setTimeout(remove, 1000);
 
-  count_finished++;
-  document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
+  function remove()
+  {
+    var el = document.getElementById(id);
+    el.remove();
+  }
+  // Remove from Local Storage
+  localStorage.removeItem(id);
 }
 
 function addTask()
@@ -112,24 +116,35 @@ function addTask()
   }
   else
   {
-    if(date === today)
-    {
+  	alert(  parseInt(task_date[2]) == parseInt(cur_date[2]) + 1)
+    if(date == today)
+    {    	
       addTaskLi(this.count, title, date, "todayList");
       var x = document.getElementById("collapseOne");
       x.classList.add("show");
       count_today++;
       document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
     }
-    else if (parseInt(cur_date[1]) + 1 === parseInt(task_date[1])) 
-    {
+    else if (parseInt(cur_date[2]) + 1 == parseInt(task_date[2]))
+    {  	
       addTaskLi(this.count, title, date, "tomorrowList");
       var x = document.getElementById("collapseTwo");
         x.classList.add("show");
-    }       
-    addEvent();
+    }
+    else
+    {
+    	addTaskLi(this.count, title, date, "otherList");
+      	var x = document.getElementById("collapseTwo");
+        x.classList.add("show");
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    //addEvent1();
   // Store
   window.localStorage.setItem(count, title + " " + date);
   }
+     document.getElementById("task").value = "";
 }
 
 
@@ -140,8 +155,45 @@ function addTaskLi(count, title, date, list)
     node.setAttribute("class", "list-group-item");
     node.style.backgroundColor = "yellow";
     var textnode = document.createTextNode(title + " " + date);
+
     node.appendChild(textnode);
     document.getElementById(list).appendChild(node);
+
+    node.addEventListener('click', function(e)
+    {
+      document.getElementById(this.id).style.color = "green";
+      console.log(this.id);
+      console.log(this.innerHTML);
+      // if(flag !== null)
+      // {
+        var task_date = this.innerHTML.split(" ");
+        //var task1_date = task_date[1].split("-");
+        //var cur_date = today.split("-");
+        //console.log(cur_date[2]);
+        if(task_date[1] === today)
+        {
+            count_finished++;
+            document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
+        }
+        addFinishedLi(this.id, this.innerHTML, "doneList");
+    });
 }
 
 
+
+function fadeOutEffect(id) 
+{
+    var fadeTarget = document.getElementById(id);
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+        if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.3;
+        } else {
+            clearInterval(fadeEffect);
+        }
+    }, 200);
+}
+
+document.getElementById("target").addEventListener('click', fadeOutEffect);
