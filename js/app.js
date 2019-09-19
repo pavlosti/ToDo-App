@@ -96,6 +96,12 @@ function addFinishedLi(id, text, list)
     var el = document.getElementById(id);
     el.remove();
   }
+  //alert(count_finished++)
+  // if (((count_finished++) - count_finished) == 0){
+  // 	alert("asdasdasd");
+  // }
+  //count_finished++;
+  document.getElementById("completed_task").innerHTML = (count_finished) + "/" + count_today;
   // Remove from Local Storage
   localStorage.removeItem(id);
 }
@@ -169,9 +175,10 @@ function addTaskLi(count, title, date, list)
         var task_date = this.innerHTML.split(" ");
         //var task1_date = task_date[1].split("-");
         //var cur_date = today.split("-");
-        //console.log(cur_date[2]);
+        console.log(task_date);
         if(task_date[1] === today)
         {
+        	alert("hit")
             count_finished++;
             document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
         }
