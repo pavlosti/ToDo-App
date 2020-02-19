@@ -23,7 +23,7 @@ function fetchAllStorage()
   for (; key = keys[i]; i++) {
       var task_date = localStorage.getItem(key).split(" ");
       var task1_date = task_date[1].split("-");
-      console.log(task1_date);
+      //console.log(task1_date);
 
       if(task_date[1] === today)
       {
@@ -52,8 +52,8 @@ function addEvent1()
     Array.prototype.slice.call(list).forEach(function(listItem){
     listItem.addEventListener('click', function(e){
       document.getElementById(this.id).style.color = "green";
-      console.log(this.id);
-      console.log(this.innerHTML);
+      //console.log(this.id);
+      //console.log(this.innerHTML);
     });
   });
 }
@@ -63,11 +63,11 @@ function init()
 {
     if (count === null)
     {
-      console.log("Local storage is empty")
+      //console.log("Local storage is empty")
     }
     else
     {
-      console.log("local storage is not empty")
+      //console.log("local storage is not empty")
       fetchAllStorage();
       document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;      
     }
@@ -122,7 +122,7 @@ function addTask()
   }
   else
   {
-  	alert(  parseInt(task_date[2]) == parseInt(cur_date[2]) + 1)
+  	//alert(  parseInt(task_date[2]) == parseInt(cur_date[2]) + 1)
     if(date == today)
     {    	
       addTaskLi(this.count, title, date, "todayList");
@@ -168,17 +168,16 @@ function addTaskLi(count, title, date, list)
     node.addEventListener('click', function(e)
     {
       document.getElementById(this.id).style.color = "green";
-      console.log(this.id);
-      console.log(this.innerHTML);
+      //console.log(this.id);
+      //console.log(this.innerHTML);
       // if(flag !== null)
       // {
         var task_date = this.innerHTML.split(" ");
         //var task1_date = task_date[1].split("-");
         //var cur_date = today.split("-");
-        console.log(task_date);
+        //console.log(task_date);
         if(task_date[1] === today)
         {
-        	alert("hit")
             count_finished++;
             document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;
         }
