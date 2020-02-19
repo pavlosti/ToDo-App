@@ -21,22 +21,22 @@ function fetchAllStorage()
       i = 0, key;
 
   for (; key = keys[i]; i++) {
-      var task_date = localStorage.getItem(key).split(" ");
+      var task_date = localStorage.getItem(key).split(" | ");
       var task1_date = task_date[1].split("-");
-      //console.log(task1_date);
+      console.log(task1_date);
 
       if(task_date[1] === today)
-      {
-        addTaskLi(key, localStorage.getItem(key), task_date[1], "todayList");
+      {     	
+        addTaskLi(key, task_date[0], task_date[1], "todayList");
         count_today++;
       }
       else if (parseInt(cur_date[2]) + 1 === parseInt(task1_date[2]))
       {
-        addTaskLi(key, localStorage.getItem(key), task_date[1], "tomorrowList");
+        addTaskLi(key, task_date[0], task_date[1], "tomorrowList");
       }
       else
       {
-        addTaskLi(key, localStorage.getItem(key), task_date[1], "otherList");
+        addTaskLi(key, task_date[0], task_date[1], "otherList");
       }
 
   }
@@ -52,8 +52,8 @@ function addEvent1()
     Array.prototype.slice.call(list).forEach(function(listItem){
     listItem.addEventListener('click', function(e){
       document.getElementById(this.id).style.color = "green";
-      //console.log(this.id);
-      //console.log(this.innerHTML);
+      console.log(this.id);
+      console.log(this.innerHTML);
     });
   });
 }
@@ -63,18 +63,15 @@ function init()
 {
     if (count === null)
     {
-      //console.log("Local storage is empty")
+      console.log("Local storage is empty")
     }
     else
     {
-      //console.log("local storage is not empty")
+      console.log("local storage is not empty")
       fetchAllStorage();
       document.getElementById("completed_task").innerHTML = count_finished + "/" + count_today;      
     }
 }
-
-
-
 
 function addFinishedLi(id, text, list)
 {
@@ -96,11 +93,6 @@ function addFinishedLi(id, text, list)
     var el = document.getElementById(id);
     el.remove();
   }
-  //alert(count_finished++)
-  // if (((count_finished++) - count_finished) == 0){
-  // 	alert("asdasdasd");
-  // }
-  //count_finished++;
   document.getElementById("completed_task").innerHTML = (count_finished) + "/" + count_today;
   // Remove from Local Storage
   localStorage.removeItem(id);
@@ -124,7 +116,7 @@ function addTask()
   {
   	//alert(  parseInt(task_date[2]) == parseInt(cur_date[2]) + 1)
     if(date == today)
-    {    	
+    {  
       addTaskLi(this.count, title, date, "todayList");
       var x = document.getElementById("collapseOne");
       x.classList.add("show");
@@ -144,11 +136,8 @@ function addTask()
         x.classList.add("show");
     }
 
-
-    /////////////////////////////////////////////////////////////////////////////
-    //addEvent1();
   // Store
-  window.localStorage.setItem(count, title + " " + date);
+  window.localStorage.setItem(count, title + " | " + date);
   }
      document.getElementById("task").value = "";
 }
@@ -160,7 +149,8 @@ function addTaskLi(count, title, date, list)
     node.setAttribute("id", count);
     node.setAttribute("class", "list-group-item");
     node.style.backgroundColor = "yellow";
-    var textnode = document.createTextNode(title + " " + date);
+    var textnode = document.createTextNode(title + " | " + date);
+    
 
     node.appendChild(textnode);
     document.getElementById(list).appendChild(node);
@@ -168,14 +158,14 @@ function addTaskLi(count, title, date, list)
     node.addEventListener('click', function(e)
     {
       document.getElementById(this.id).style.color = "green";
-      //console.log(this.id);
-      //console.log(this.innerHTML);
+      console.log(this.id);
+      console.log(this.innerHTML);
       // if(flag !== null)
       // {
-        var task_date = this.innerHTML.split(" ");
+        var task_date = this.innerHTML.split(" | ");
         //var task1_date = task_date[1].split("-");
         //var cur_date = today.split("-");
-        //console.log(task_date);
+        console.log(task_date);
         if(task_date[1] === today)
         {
             count_finished++;
